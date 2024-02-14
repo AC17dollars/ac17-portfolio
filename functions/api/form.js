@@ -31,7 +31,7 @@ export async function onRequest(event) {
         }),
       });
 
-      console.log(sendGridResponse);
+      console.log(sendGridResponse.status, sendGridResponse.statusText);
 
       if (sendGridResponse.ok) {
         return new Response(JSON.stringify({ success: true }), {
