@@ -21,7 +21,8 @@ export async function onRequest(event) {
             }]
           }],
           from: {
-            email: `${data['email']}`
+            email: `${event.env.MY_EMAIL}`,
+            name: 'Contact Form'
           },
           subject: data['subject'],
           content: [{
@@ -30,8 +31,6 @@ export async function onRequest(event) {
           }]
         }),
       });
-
-      console.log(sendGridResponse.status, sendGridResponse.statusText);
 
       if (sendGridResponse.ok) {
         return new Response(JSON.stringify({ success: true }), {
