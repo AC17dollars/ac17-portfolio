@@ -21,7 +21,7 @@ export async function onRequest(event) {
             }]
           }],
           from: {
-            email: `${event.env.MY_EMAIL}`,
+            email: `${event.env.CONTACT_EMAIL}`,
             name: 'Contact Form'
           },
           subject: data['subject'],
