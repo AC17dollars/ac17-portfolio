@@ -1,8 +1,8 @@
 
-export async function onRequest(request) {
-  if (request.method === 'POST') {
+export async function onRequest(event) {
+  if (event.request.method === 'POST') {
     try {
-      const formData = await request.formData();
+      const formData = await event.request.formData();
       const data = {};
       for (const entry of formData.entries()) {
         data[entry[0]] = entry[1];
