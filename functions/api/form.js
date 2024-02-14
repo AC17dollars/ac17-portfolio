@@ -11,13 +11,13 @@ export async function onRequest(event) {
       const sendGridResponse = await fetch('https://api.sendgrid.com/v3/mail/send', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${env.SENDGRID_API_KEY}`,
+          'Authorization': `Bearer ${event.env.SENDGRID_API_KEY}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           personalizations: [{
             to: [{
-              email: `${env.MY_EMAIL}`
+              email: `${event.env.MY_EMAIL}`
             }]
           }],
           from: {
