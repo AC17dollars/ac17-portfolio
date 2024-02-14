@@ -1,9 +1,5 @@
 
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
-
-async function handleRequest(request) {
+export async function onRequest(request) {
   if (request.method === 'POST') {
     try {
       const formData = await request.formData();
