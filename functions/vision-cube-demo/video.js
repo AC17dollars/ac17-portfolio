@@ -1,5 +1,5 @@
 async function onRequest(event) {
-  if (event.request.method === 'POST') {
+  if (event.request.method === 'GET') {
     const fileContent = await fetch('/assets/[Demo] Vision-aided Mechanical Design for an Autonomous Rubik\'s Cube Solver.mp4')
     const headers = new Headers(fileContent.headers)
 
