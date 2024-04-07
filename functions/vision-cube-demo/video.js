@@ -1,6 +1,6 @@
-async function onRequest(request) {
-  if (new URL(request.url).pathname === '/vision-cube-demo/video') {
-    const fileContent = await fetch('assets/[Demo] Vision-aided Mechanical Design for an Autonomous Rubik\'s Cube Solver.mp4')
+async function onRequest(event) {
+  if (event.request.method === 'POST') {
+    const fileContent = await fetch('/assets/[Demo] Vision-aided Mechanical Design for an Autonomous Rubik\'s Cube Solver.mp4')
     const headers = new Headers(fileContent.headers)
 
     headers.set('Content-Disposition', 'attachment; filename="[Demo] Vision-aided Mechanical Design for an Autonomous Rubik\'s Cube Solver.mp4"')
