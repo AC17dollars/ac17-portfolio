@@ -14,7 +14,7 @@ async function onRequest(event) {
       return modifiedResponse
     }
     catch (err) {
-      return new Response('Not Found', { status: 404 })
+      return new Response('Invalid Request', { status: 400 })
     }
   }
 }
