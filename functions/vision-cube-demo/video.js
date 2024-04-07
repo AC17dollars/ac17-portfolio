@@ -1,8 +1,4 @@
-addEventListener('fetch', (event) => {
-  event.respondWith(handleRequest(event.request))
-})
-
-async function handleRequest(request) {
+async function onRequest(request) {
   if (new URL(request.url).pathname === '/vision-cube-demo/video') {
     const fileContent = await fetch('assets/[Demo] Vision-aided Mechanical Design for an Autonomous Rubik\'s Cube Solver.mp4')
     const headers = new Headers(fileContent.headers)
