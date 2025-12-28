@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 import { useOnScreen } from '../hooks/useOnScreen';
 import { ArrowUpRight } from 'lucide-react';
 
+import nepaliCalendarSmall from '../assets/nepcal_small.jpg';
+import nepaliCalendarMedium from '../assets/nepcal_medium.jpg';
+import nepaliCalendarLarge from '../assets/nepcal_large.jpg';
 import rubiksCubeSmall from '../assets/rubiks_cube_small.jpg';
 import rubiksCubeMedium from '../assets/rubiks_cube_medium.jpg';
 import rubiksCubeLarge from '../assets/rubiks_cube_large.jpg';
@@ -24,6 +27,15 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "Nepali Calendar Plugin",
+    category: "DankMaterialShell",
+    link: "https://github.com/AC17dollars/dms-nepali-calendar",
+    image: nepaliCalendarLarge,
+    srcSet: `${nepaliCalendarSmall} 400w, ${nepaliCalendarMedium} 800w, ${nepaliCalendarLarge} 1200w`,
+    tags: ["QML", "DankMaterialShell", "Nepali Calendar"],
+    description: "A Nepali calendar plugin for DankMaterialShell, made in QML."
+  },
+  {
     title: "Vision Cube",
     category: "Computer Vision",
     link: "https://github.com/ac17dollars/vision-cube",
@@ -44,7 +56,7 @@ const projects: Project[] = [
   {
     title: "IOE LaTeX Template",
     category: "Academic Tools",
-    link: "https://github.com/ac17dollars/IOE-LaTeX",
+    link: "https://github.com/AC17dollars/thapathali-report-latex-template",
     image: latexTemplateLarge,
     srcSet: `${latexTemplateSmall} 400w, ${latexTemplateMedium} 800w, ${latexTemplateLarge} 1200w`,
     tags: ["TeX", "Automation", "Open Source"],
