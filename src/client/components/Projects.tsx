@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useOnScreen } from '../hooks/useOnScreen';
 import { ArrowUpRight } from 'lucide-react';
 
-// Import images for Vite bundling
 import rubiksCubeSmall from '../assets/rubiks_cube_small.jpg';
 import rubiksCubeMedium from '../assets/rubiks_cube_medium.jpg';
 import rubiksCubeLarge from '../assets/rubiks_cube_large.jpg';
