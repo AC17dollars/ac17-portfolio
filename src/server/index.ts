@@ -72,7 +72,7 @@ app.post('/api/chat', async (c) => {
         const ai = new GoogleGenAI({ apiKey });
 
         const chat = ai.chats.create({
-            model: 'gemini-2.5-flash',
+            model: 'gemini-2.5-flash-lite',
             config: {
                 systemInstruction: SYSTEM_INSTRUCTION,
             },
