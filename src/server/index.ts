@@ -115,7 +115,11 @@ app.get('/api/github/activity', async (c) => {
     }
 
     try {
-        const githubResponse = await fetch('https://api.github.com/users/ac17dollars/events/public');
+        const githubResponse = await fetch('https://api.github.com/users/ac17dollars/events/public', {
+            headers: {
+                'User-Agent': 'ac17-portfolio'
+            }
+        });
 
         if (!githubResponse.ok) {
             if (githubResponse.status === 403 || githubResponse.status === 429) {
