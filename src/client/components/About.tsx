@@ -1,9 +1,57 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useOnScreen } from '../hooks/useOnScreen';
+import type { GitHubEvent } from '../../shared/types';
+import { GitBranch, Star, GitPullRequest, AlertCircle, Code } from 'lucide-react';
 
 export const About: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref);
+  const [githubActivity, setGithubActivity] = useState<GitHubEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [rateLimited, setRateLimited] = useState(false);
+
+  useEffect(() => {
+    const fetchGithubActivity = async () => {
+      try {
+        const response = await fetch('/api/github/activity');
+        if (response.ok) {
+          const data = await response.json();
+          setGithubActivity(data);
+        } else if (response.status === 429) {
+          setRateLimited(true);
+        }
+      } catch (error) {
+        console.error('Failed to fetch GitHub activity:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGithubActivity();
+  }, []);
+
+  const getEventIcon = (type: string) => {
+    switch (type) {
+      case 'PushEvent': return <GitBranch className="w-3 h-3" />;
+      case 'WatchEvent': return <Star className="w-3 h-3" />;
+      case 'PullRequestEvent': return <GitPullRequest className="w-3 h-3" />;
+      case 'IssuesEvent': return <AlertCircle className="w-3 h-3" />;
+      case 'CreateEvent': return <Code className="w-3 h-3" />;
+      default: return <Code className="w-3 h-3" />;
+    }
+  };
+
+  const getEventDescription = (event: GitHubEvent) => {
+    const repoName = event.repo.name.split('/')[1];
+    switch (event.type) {
+      case 'PushEvent': return `Pushed to ${repoName}`;
+      case 'WatchEvent': return `Starred ${repoName}`;
+      case 'PullRequestEvent': return `${event.payload?.action || 'Updated'} PR in ${repoName}`;
+      case 'IssuesEvent': return `${event.payload?.action || 'Updated'} issue in ${repoName}`;
+      case 'CreateEvent': return `Created ${event.payload?.ref_type || 'repo'} in ${repoName}`;
+      default: return `Activity in ${repoName}`;
+    }
+  };
 
   return (
     <section id="about" className="relative min-h-[80vh] flex items-center justify-center py-20 px-6 md:px-12 bg-brand-dark">
@@ -25,6 +73,39 @@ export const About: React.FC = () => {
             <p className="text-lg md:text-xl text-gray-400 leading-relaxed font-light mt-8">
               Currently working as a <span className="text-brand-accent font-serif italic">Node Developer</span> for <a href="https://ekbana.com" target="_blank" rel="noopener noreferrer" className="hover:underline underline-offset-4">E.K. Solutions (EKbana)</a>.
             </p>
+
+            {/* GitHub Activity */}
+            <div className="mt-12">
+              <h3 className="text-sm font-sans tracking-widest uppercase text-gray-500 mb-4">Recent Activity</h3>
+              {loading ? (
+                <div className="space-y-2">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-6 bg-white/5 rounded animate-pulse" />
+                  ))}
+                </div>
+              ) : githubActivity.length > 0 ? (
+                <div className="space-y-3">
+                  {githubActivity.map((event) => (
+                    <a
+                      key={event.id}
+                      href={event.repo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 text-sm text-gray-400 hover:text-brand-accent transition-colors group"
+                    >
+                      <span className="text-gray-500 group-hover:text-brand-accent transition-colors">
+                        {getEventIcon(event.type)}
+                      </span>
+                      <span className="font-light">{getEventDescription(event)}</span>
+                    </a>
+                  ))}
+                </div>
+              ) : rateLimited ? (
+                <p className="text-xs text-gray-500 font-light italic">
+                  GitHub activity unavailable due to heavy usage. Please allow some time for rate limits to reset.
+                </p>
+              ) : null}
+            </div>
           </div>
         </div>
       </div>

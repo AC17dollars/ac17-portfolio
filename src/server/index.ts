@@ -6,6 +6,10 @@ type Bindings = {
     GEMINI_API_KEY: string;
 }
 
+declare const caches: {
+    default: Cache;
+} | undefined;
+
 const app = new Hono<{ Bindings: Bindings }>();
 
 app.use('/api/*', cors());
@@ -49,9 +53,10 @@ Technical Skills:
 1. Tone: Professional yet witty. Think "Modern Engineer".
 2. Constraints:
    - Keep responses concise (under 100 words) unless asked to elaborate on a technical project.
+   - Properly put spacing and paragraph breaks on responses if it is slightly long.
    - For contact details, point to the 'Contact' section or provide the email above.
    - Do not write code for users unless it's a very simple snippet related to his projects.
-   - If asked about "Vision Cube", emphasize the YOLOv8 + C# integration.
+   - If asked about "Vision Cube", emphasize the YOLOv8 + C# integration provide a demo link https://youtu.be/rlcDXjqy2Vs.
    - If asked about "IOE LaTeX", mention it's the standardized template for Thapathali Campus.
 3. Goal: Be a helpful first point of contact for recruiters or curious visitors.
 `;
@@ -90,6 +95,90 @@ app.post('/api/chat', async (c) => {
     } catch (error) {
         console.error("Gemini API Error:", error);
         return c.json({ error: 'Failed to generate response' }, 500);
+    }
+});
+
+app.get('/api/github/activity', async (c) => {
+    const cache = typeof caches !== 'undefined' ? caches.default : null;
+
+    if (cache) {
+        const cacheKey = new Request('https://cache.github-activity.local/api/github/activity', {
+            method: 'GET'
+        });
+
+        const cachedResponse = await cache.match(cacheKey);
+        if (cachedResponse) {
+            const response = new Response(cachedResponse.body, cachedResponse);
+            response.headers.set('X-Worker-Cache', 'HIT');
+            return response;
+        }
+    }
+
+    try {
+        const githubResponse = await fetch('https://api.github.com/users/ac17dollars/events/public');
+
+        if (!githubResponse.ok) {
+            if (githubResponse.status === 403 || githubResponse.status === 429) {
+                return c.json({ error: 'GitHub API rate limit exceeded' }, 429);
+            }
+            return c.json({ error: 'Failed to fetch GitHub activity' }, 500);
+        }
+
+        const events = await githubResponse.json();
+
+        const relevantTypes = ['PushEvent', 'CreateEvent', 'PullRequestEvent', 'IssuesEvent', 'WatchEvent'];
+
+        const seenRepos = new Set<string>();
+
+        const filteredEvents = events
+            .filter((event: any) => {
+                if (!relevantTypes.includes(event.type)) return false;
+
+                const isMundane = ['PushEvent', 'WatchEvent', 'CreateEvent'].includes(event.type);
+                if (isMundane) {
+                    if (seenRepos.has(event.repo.name)) {
+                        return false;
+                    }
+                    seenRepos.add(event.repo.name);
+                }
+
+                return true;
+            })
+            .slice(0, 4)
+            .map((event: any) => ({
+                id: event.id,
+                type: event.type,
+                repo: {
+                    name: event.repo.name,
+                    url: `https://github.com/${event.repo.name}`
+                },
+                created_at: event.created_at,
+                payload: {
+                    action: event.payload?.action,
+                    ref: event.payload?.ref,
+                    ref_type: event.payload?.ref_type
+                }
+            }));
+
+        const response = new Response(JSON.stringify(filteredEvents), {
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'public, max-age=3600',
+                'X-Worker-Cache': 'MISS'
+            }
+        });
+
+        if (cache && c.executionCtx) {
+            const cacheKey = new Request('https://cache.github-activity.local/api/github/activity', {
+                method: 'GET'
+            });
+            c.executionCtx.waitUntil(cache.put(cacheKey, response.clone()));
+        }
+
+        return response;
+    } catch (error) {
+        console.error('GitHub API Error:', error);
+        return c.json({ error: 'Failed to fetch GitHub activity' }, 500);
     }
 });
 

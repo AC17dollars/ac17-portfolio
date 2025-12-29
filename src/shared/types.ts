@@ -15,3 +15,20 @@ export enum ViewState {
   ABOUT = 'ABOUT',
   CONTACT = 'CONTACT'
 }
+
+export interface GitHubRepo {
+  name: string;
+  url: string;
+}
+
+export interface GitHubEvent {
+  id: string;
+  type: string;
+  repo: GitHubRepo;
+  created_at: string;
+  payload?: {
+    action?: string;
+    ref?: string;
+    ref_type?: string;
+  };
+}
