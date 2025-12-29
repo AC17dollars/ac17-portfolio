@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Sparkles, Loader2 } from 'lucide-react';
+import { X, Send, Sparkles, Loader2 } from 'lucide-react';
 import { Message } from '@shared/types';
 import { sendMessageToGemini } from '@shared/services/geminiService';
 
@@ -93,8 +93,8 @@ export const ChatWidget: React.FC = () => {
               >
                 <div
                   className={`max-w-[80%] p-3 rounded-lg text-sm leading-relaxed ${msg.role === 'user'
-                      ? 'bg-cyan-900/40 text-cyan-100 border border-cyan-800/50'
-                      : 'bg-white/5 text-gray-200 border border-white/10'
+                    ? 'bg-cyan-900/40 text-cyan-100 border border-cyan-800/50'
+                    : 'bg-white/5 text-gray-200 border border-white/10'
                     }`}
                 >
                   {msg.text}

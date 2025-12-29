@@ -1,6 +1,5 @@
 import React from 'react';
 import { useKathmanduTime } from '../hooks/useTime';
-import { Github, Linkedin } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   const time = useKathmanduTime();
