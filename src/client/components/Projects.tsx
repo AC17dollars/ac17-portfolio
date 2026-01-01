@@ -81,16 +81,19 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
           srcSet={project.srcSet}
           sizes="(max-width: 768px) 100vw, 70vw"
           alt={project.title}
-          className="w-full h-[50vh] md:h-[70vh] object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
+          className="w-full h-[50vh] md:h-[70vh] object-cover grayscale-0 md:grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out scale-100 group-hover:scale-105"
         />
 
         {/* Hover overlay info */}
-        <div className="absolute top-6 right-6 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-white text-black rounded-full p-3">
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
-              <ArrowUpRight className="w-5 h-5" />
-            </a>
-          </div>
+        <div className="absolute top-6 right-6 z-20 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white text-black rounded-full p-3 block hover:scale-110 active:scale-95 transition-transform duration-200"
+          >
+            <ArrowUpRight className="w-5 h-5" />
+          </a>
         </div>
       </div>
 
