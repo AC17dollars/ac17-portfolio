@@ -9,7 +9,7 @@ export const Experience: React.FC = () => {
         <section id="resume" className="py-20 px-6 md:px-12 bg-brand-dark border-t border-white/5">
             <div ref={ref} className="max-w-7xl mx-auto">
                 <div className="mb-20 flex items-center space-x-4">
-                    <span className="text-brand-accent font-serif italic text-xl">02</span>
+                    <span className="text-brand-accent font-serif italic text-xl">01</span>
                     <span className="h-px bg-white/20 w-20"></span>
                     <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-white">Resume</h2>
                 </div>

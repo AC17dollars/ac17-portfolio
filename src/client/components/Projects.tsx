@@ -124,7 +124,7 @@ export const Projects: React.FC = () => {
     <section id="projects" className="relative py-20 px-6 md:px-12 bg-brand-dark">
       <div className="max-w-7xl mx-auto">
         <div className="mb-20 flex items-center space-x-4">
-          <span className="text-brand-accent font-serif italic text-xl">01</span>
+          <span className="text-brand-accent font-serif italic text-xl">02</span>
           <span className="h-px bg-white/20 w-20"></span>
           <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-white">Selected Projects</h2>
         </div>
