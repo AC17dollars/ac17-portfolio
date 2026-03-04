@@ -8,8 +8,9 @@
  * - MATRIX_HOMESERVER_BASE_URL: Base URL for client-server API (e.g. "https://chalisezabhinav.com.np")
  */
 
-const DEFAULT_SERVER = "matrix.chalisezabhinav.com.np:8448";
-const DEFAULT_HOMESERVER_BASE_URL = "https://chalisezabhinav.com.np";
+const DEFAULT_SERVER = "matrix.chaliseabhinav.com.np:443";
+const DEFAULT_HOMESERVER_BASE_URL = "https://matrix.chaliseabhinav.com.np";
+const DEFAULT_MATRIX_RTC = "https://matrix-rtc.chaliseabhinav.com.np";
 
 export const onRequest = async (context: {
   params: { path?: string };
@@ -19,7 +20,8 @@ export const onRequest = async (context: {
   const server = context.env?.MATRIX_SERVER ?? DEFAULT_SERVER;
   const baseUrl =
     context.env?.MATRIX_HOMESERVER_BASE_URL ?? DEFAULT_HOMESERVER_BASE_URL;
-
+  const rtcUrl = context.env?.MATRIX_RTC ?? DEFAULT_MATRIX_RTC;
+  
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     "Cache-Control": "public, max-age=86400", // 24h per spec recommendation
@@ -41,6 +43,12 @@ export const onRequest = async (context: {
         "m.homeserver": {
           base_url: baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl,
         },
+        "org.matrix.msc4143.rtc_foci": [
+          {
+            type: "livekit",
+            livekit_service_url:  rtcUrl.endsWith("/") ? rtcUrl.slice(0, -1) : rtcUrl,
+          }
+        ],
       }),
       { status: 200, headers },
     );
