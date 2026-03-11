@@ -1,7 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Sparkles, Loader2 } from 'lucide-react';
+import { X, Send, Sparkles, Loader2, Copy, Check } from 'lucide-react';
 import { Message } from '@shared/types';
 import { sendMessageToGemini } from '@shared/services/geminiService';
+import ReactMarkdown from 'react-markdown';
+
+const CopyButton = ({ code }: { code: string }) => {
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-gray-400 hover:text-cyan-300"
+      title="Copy to clipboard"
+    >
+      {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+    </button>
+  );
+};
 
 export const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -97,7 +118,41 @@ export const ChatWidget: React.FC = () => {
                     : 'bg-white/5 text-gray-200 border border-white/10'
                     }`}
                 >
-                  {msg.text}
+                  <ReactMarkdown
+                    components={{
+                      a: ({ node, ...props }) => <a {...props} className="text-cyan-400 hover:text-cyan-300 underline decoration-cyan-500/30 transition-colors" target="_blank" rel="noopener noreferrer" />,
+                      code: ({ node, inline, className, children, ...props }: any) => {
+                        const match = /language-(\w+)/.exec(className || '');
+                        const codeContent = String(children).replace(/\n$/, '');
+                        
+                        if (inline) {
+                          return <code {...props} className="bg-white/10 px-1.5 py-0.5 rounded font-mono text-xs" text-white>{children}</code>;
+                        }
+
+                        return (
+                          <div className="relative group/code my-4">
+                            <div className="bg-black/40 rounded-xl border border-white/10 font-mono text-xs overflow-hidden">
+                              <div className="flex items-center justify-between px-4 py-2 border-b border-white/5 bg-white/5">
+                                <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">
+                                  {match ? match[1] : 'code'}
+                                </span>
+                                <CopyButton code={codeContent} />
+                              </div>
+                              <div className="p-4 overflow-x-auto">
+                                <code className={className} {...props}>
+                                  {children}
+                                </code>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      },
+                      strong: ({ node, ...props }) => <strong {...props} className="font-bold text-white" />,
+                      em: ({ node, ...props }) => <em {...props} className="italic text-gray-100" />
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
                 </div>
               </div>
             ))}

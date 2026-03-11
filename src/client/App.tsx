@@ -5,6 +5,7 @@ import { About } from './components/About';
 import { Experience } from './components/Experience';
 import { Projects } from './components/Projects';
 import { ChatWidget } from './components/ChatWidget';
+import { Mail, MessageSquare } from 'lucide-react';
 
 const App: React.FC = () => {
   return (
@@ -24,9 +25,25 @@ const App: React.FC = () => {
             <p className="text-gray-400 max-w-xl mx-auto mb-12">
               I'm always open to discussing new projects, creative ideas or opportunities to be part of your visions.
             </p>
-            <a href="mailto:abhinav@chalisezabhinav.com.np" className="inline-block border border-white/20 hover:border-brand-accent hover:text-brand-accent px-8 py-4 rounded-full transition-colors duration-300">
-              Get in Touch
-            </a>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
+              <a 
+                href="mailto:ac@chaliseabhinav.com.np" 
+                className="group flex items-center space-x-3 border border-white/10 hover:border-brand-accent/50 hover:bg-brand-accent/5 px-10 py-5 rounded-2xl transition-all duration-500 hover:-translate-y-1"
+              >
+                <Mail className="w-5 h-5 text-brand-accent group-hover:scale-110 transition-transform duration-500" />
+                <span className="font-mono text-xs font-bold tracking-[0.2em] uppercase text-gray-300 group-hover:text-white transition-colors">Email</span>
+              </a>
+              
+              <a 
+                href="https://matrix.to/#/@chalisez:chaliseabhinav.com.np" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="group flex items-center space-x-3 border border-white/10 hover:border-brand-accent/50 hover:bg-brand-accent/5 px-10 py-5 rounded-2xl transition-all duration-500 hover:-translate-y-1"
+              >
+                <MessageSquare className="w-5 h-5 text-brand-accent group-hover:scale-110 transition-transform duration-500" />
+                <span className="font-mono text-xs font-bold tracking-[0.2em] uppercase text-gray-300 group-hover:text-white transition-colors">Matrix</span>
+              </a>
+            </div>
 
             <div className="mt-32 flex justify-between items-end text-xs text-gray-600 font-mono uppercase tracking-widest">
               <div>© 2026 Abhinav Chalise</div>
