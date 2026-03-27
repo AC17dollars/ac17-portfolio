@@ -1,19 +1,19 @@
-import React, { useRef } from 'react';
-import { useOnScreen } from '../hooks/useOnScreen';
-import { ArrowUpRight } from 'lucide-react';
+import React, { useRef } from "react";
+import { useOnScreen } from "../hooks/useOnScreen";
+import { ArrowUpRight } from "lucide-react";
 
-import nepaliCalendarSmall from '../assets/nepcal_small.jpg';
-import nepaliCalendarMedium from '../assets/nepcal_medium.jpg';
-import nepaliCalendarLarge from '../assets/nepcal_large.jpg';
-import rubiksCubeSmall from '../assets/rubiks_cube_small.jpg';
-import rubiksCubeMedium from '../assets/rubiks_cube_medium.jpg';
-import rubiksCubeLarge from '../assets/rubiks_cube_large.jpg';
-import wordleSmall from '../assets/wordle_small.jpg';
-import wordleMedium from '../assets/wordle_medium.jpg';
-import wordleLarge from '../assets/wordle_large.jpg';
-import latexTemplateSmall from '../assets/latextemplate_small.jpg';
-import latexTemplateMedium from '../assets/latextemplate_medium.jpg';
-import latexTemplateLarge from '../assets/latextemplate_large.jpg';
+import nepaliCalendarSmall from "../assets/nepcal_small.jpg";
+import nepaliCalendarMedium from "../assets/nepcal_medium.jpg";
+import nepaliCalendarLarge from "../assets/nepcal_large.jpg";
+import rubiksCubeSmall from "../assets/rubiks_cube_small.jpg";
+import rubiksCubeMedium from "../assets/rubiks_cube_medium.jpg";
+import rubiksCubeLarge from "../assets/rubiks_cube_large.jpg";
+import wordleSmall from "../assets/wordle_small.jpg";
+import wordleMedium from "../assets/wordle_medium.jpg";
+import wordleLarge from "../assets/wordle_large.jpg";
+import latexTemplateSmall from "../assets/latextemplate_small.jpg";
+import latexTemplateMedium from "../assets/latextemplate_medium.jpg";
+import latexTemplateLarge from "../assets/latextemplate_large.jpg";
 
 interface Project {
   title: string;
@@ -33,7 +33,7 @@ const projects: Project[] = [
     image: nepaliCalendarLarge,
     srcSet: `${nepaliCalendarSmall} 400w, ${nepaliCalendarMedium} 800w, ${nepaliCalendarLarge} 1200w`,
     tags: ["QML", "DankMaterialShell", "Nepali Calendar"],
-    description: "A Nepali calendar plugin for DankMaterialShell, made in QML."
+    description: "A Nepali calendar plugin for DankMaterialShell, made in QML.",
   },
   {
     title: "Vision Cube",
@@ -42,7 +42,8 @@ const projects: Project[] = [
     image: rubiksCubeLarge,
     srcSet: `${rubiksCubeSmall} 400w, ${rubiksCubeMedium} 800w, ${rubiksCubeLarge} 1200w`,
     tags: ["C#", "YOLOv8", "Computer Vision"],
-    description: "A mechanical Rubik's Cube solver built using YOLOv8 and C# for GUI."
+    description:
+      "A mechanical Rubik's Cube solver built using YOLOv8 and C# for GUI.",
   },
   {
     title: "Wordle Clone",
@@ -51,7 +52,8 @@ const projects: Project[] = [
     image: wordleLarge,
     srcSet: `${wordleSmall} 400w, ${wordleMedium} 800w, ${wordleLarge} 1200w`,
     tags: ["C++", "wxWidgets", "GUI"],
-    description: "A desktop Wordle clone built from scratch in C++, featuring a native GUI."
+    description:
+      "A desktop Wordle clone built from scratch in C++, featuring a native GUI.",
   },
   {
     title: "IOE LaTeX Template",
@@ -60,18 +62,22 @@ const projects: Project[] = [
     image: latexTemplateLarge,
     srcSet: `${latexTemplateSmall} 400w, ${latexTemplateMedium} 800w, ${latexTemplateLarge} 1200w`,
     tags: ["TeX", "Automation", "Open Source"],
-    description: "Project report template for students of Thapathali Campus (IOE TU), standardized for technical excellence."
-  }
+    description:
+      "Project report template for students of Thapathali Campus (IOE TU), standardized for technical excellence.",
+  },
 ];
 
-const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, index }) => {
+const ProjectCard: React.FC<{ project: Project; index: number }> = ({
+  project,
+  index,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref, 0.2);
 
   return (
     <div
       ref={ref}
-      className={`group relative mb-24 md:mb-32 transition-all duration-1000 ease-out transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}
+      className={`group relative mb-24 md:mb-32 transition-all duration-1000 ease-out transform ${isVisible ? "translate-y-0 opacity-100" : "translate-y-20 opacity-0"}`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
       <div className="relative overflow-hidden rounded-sm bg-brand-dim/20">
@@ -99,11 +105,16 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
 
       <div className="mt-6 flex flex-col md:flex-row md:items-start justify-between">
         <div>
-          <h3 className="text-3xl md:text-4xl font-sans font-bold text-white mb-2">{project.title}</h3>
+          <h3 className="text-3xl md:text-4xl font-sans font-bold text-white mb-2">
+            {project.title}
+          </h3>
           <div className="flex flex-wrap gap-2 md:gap-4 text-xs font-mono uppercase tracking-widest text-gray-500">
             {project.tags.map((tag, i) => (
-              <span key={i}>
-                {tag} {i < project.tags.length - 1 && <span className="text-gray-700 mx-1">/</span>}
+              <span key={crypto.randomUUID()}>
+                {tag}{" "}
+                {i < project.tags.length - 1 && (
+                  <span className="text-gray-700 mx-1">/</span>
+                )}
               </span>
             ))}
           </div>
@@ -111,7 +122,9 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
 
         {project.description && (
           <div className="mt-4 md:mt-0 max-w-md">
-            <p className="text-gray-400 text-sm leading-relaxed">{project.description}</p>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              {project.description}
+            </p>
           </div>
         )}
       </div>
@@ -121,12 +134,19 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({ project, i
 
 export const Projects: React.FC = () => {
   return (
-    <section id="projects" className="relative py-20 px-6 md:px-12 bg-brand-dark">
+    <section
+      id="projects"
+      className="relative py-20 px-6 md:px-12 bg-brand-dark"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="mb-20 flex items-center space-x-4">
-          <span className="text-brand-accent font-serif italic text-xl">02</span>
+          <span className="text-brand-accent font-serif italic text-xl">
+            02
+          </span>
           <span className="h-px bg-white/20 w-20"></span>
-          <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-white">Selected Projects</h2>
+          <h2 className="text-xs font-bold tracking-[0.2em] uppercase text-white">
+            Selected Projects
+          </h2>
         </div>
 
         <div className="flex flex-col">

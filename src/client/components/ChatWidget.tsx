@@ -1,8 +1,27 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Sparkles, Loader2, Copy, Check } from 'lucide-react';
-import { Message } from '@shared/types';
-import { sendMessageToGemini } from '@shared/services/geminiService';
-import ReactMarkdown from 'react-markdown';
+import React, { useState, useRef, useEffect } from "react";
+import { X, Send, Sparkles, Loader2, Copy, Check } from "lucide-react";
+import { Message } from "@shared/types";
+import { sendMessageToGemini } from "@shared/services/geminiService";
+import ReactMarkdown from "react-markdown";
+import type { Components, ExtraProps } from "react-markdown";
+
+type MarkdownCodeProps = React.ComponentPropsWithoutRef<"code"> &
+  ExtraProps & {
+    inline?: boolean;
+  };
+
+function codeBlockSource(children: React.ReactNode): string {
+  if (typeof children === "string") {
+    return children.replace(/\n$/, "");
+  }
+  if (Array.isArray(children)) {
+    return children
+      .filter((c): c is string => typeof c === "string")
+      .join("")
+      .replace(/\n$/, "");
+  }
+  return "";
+}
 
 const CopyButton = ({ code }: { code: string }) => {
   const [copied, setCopied] = React.useState(false);
@@ -19,22 +38,96 @@ const CopyButton = ({ code }: { code: string }) => {
       className="p-1.5 rounded-md hover:bg-white/10 transition-colors text-gray-400 hover:text-cyan-300"
       title="Copy to clipboard"
     >
-      {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+      {copied ? (
+        <Check className="w-3.5 h-3.5" />
+      ) : (
+        <Copy className="w-3.5 h-3.5" />
+      )}
     </button>
   );
 };
 
+const MarkdownAnchor: Components["a"] = ({
+  node: _node,
+  children,
+  ...props
+}) => (
+  <a
+    {...props}
+    className="text-cyan-400 hover:text-cyan-300 underline decoration-cyan-500/30 transition-colors"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {children}
+  </a>
+);
+
+const MarkdownStrong: Components["strong"] = ({ node: _node, ...props }) => (
+  <strong {...props} className="font-bold text-white" />
+);
+
+const MarkdownEm: Components["em"] = ({ node: _node, ...props }) => (
+  <em {...props} className="italic text-gray-100" />
+);
+
+const MarkdownCode = ({
+  node: _node,
+  inline,
+  className,
+  children,
+  ...props
+}: MarkdownCodeProps) => {
+  const match = /language-(\w+)/.exec(className || "");
+  const codeContent = codeBlockSource(children);
+
+  if (inline) {
+    return (
+      <code
+        {...props}
+        className="bg-white/10 px-1.5 py-0.5 rounded font-mono text-xs text-white"
+      >
+        {children}
+      </code>
+    );
+  }
+
+  return (
+    <div className="relative group/code my-4">
+      <div className="bg-black/40 rounded-xl border border-white/10 font-mono text-xs overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-2 border-b border-white/5 bg-white/5">
+          <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">
+            {match ? match[1] : "code"}
+          </span>
+          <CopyButton code={codeContent} />
+        </div>
+        <div className="p-4 overflow-x-auto">
+          <code className={className} {...props}>
+            {children}
+          </code>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const markdownComponents = {
+  a: MarkdownAnchor,
+  code: MarkdownCode as Components["code"],
+  strong: MarkdownStrong,
+  em: MarkdownEm,
+} satisfies Partial<Components>;
+
 export const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: 'welcome',
-      role: 'model',
+      id: "welcome",
+      role: "model",
       text: "Hello. I'm Abhinav's AI Assistant. Ask me anything about his work, skills, or experience.",
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    },
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -47,31 +140,31 @@ export const ChatWidget: React.FC = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
     const userMsg: Message = {
       id: Date.now().toString(),
-      role: 'user',
+      role: "user",
       text: input,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMsg]);
-    setInput('');
+    setMessages((prev) => [...prev, userMsg]);
+    setInput("");
     setIsLoading(true);
 
     const responseText = await sendMessageToGemini(messages, input);
 
     const botMsg: Message = {
       id: (Date.now() + 1).toString(),
-      role: 'model',
+      role: "model",
       text: responseText,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, botMsg]);
+    setMessages((prev) => [...prev, botMsg]);
     setIsLoading(false);
   };
 
@@ -95,7 +188,9 @@ export const ChatWidget: React.FC = () => {
           <div className="flex items-center justify-between p-4 border-b border-white/5 bg-black/20">
             <div className="flex items-center space-x-2">
               <Sparkles className="w-4 h-4 text-cyan-300" />
-              <span className="text-sm font-medium tracking-wide">AI Assistant</span>
+              <span className="text-sm font-medium tracking-wide">
+                AI Assistant
+              </span>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -110,47 +205,16 @@ export const ChatWidget: React.FC = () => {
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg text-sm leading-relaxed ${msg.role === 'user'
-                    ? 'bg-cyan-900/40 text-cyan-100 border border-cyan-800/50'
-                    : 'bg-white/5 text-gray-200 border border-white/10'
-                    }`}
+                  className={`max-w-[80%] p-3 rounded-lg text-sm leading-relaxed ${
+                    msg.role === "user"
+                      ? "bg-cyan-900/40 text-cyan-100 border border-cyan-800/50"
+                      : "bg-white/5 text-gray-200 border border-white/10"
+                  }`}
                 >
-                  <ReactMarkdown
-                    components={{
-                      a: ({ node, ...props }) => <a {...props} className="text-cyan-400 hover:text-cyan-300 underline decoration-cyan-500/30 transition-colors" target="_blank" rel="noopener noreferrer" />,
-                      code: ({ node, inline, className, children, ...props }: any) => {
-                        const match = /language-(\w+)/.exec(className || '');
-                        const codeContent = String(children).replace(/\n$/, '');
-                        
-                        if (inline) {
-                          return <code {...props} className="bg-white/10 px-1.5 py-0.5 rounded font-mono text-xs" text-white>{children}</code>;
-                        }
-
-                        return (
-                          <div className="relative group/code my-4">
-                            <div className="bg-black/40 rounded-xl border border-white/10 font-mono text-xs overflow-hidden">
-                              <div className="flex items-center justify-between px-4 py-2 border-b border-white/5 bg-white/5">
-                                <span className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">
-                                  {match ? match[1] : 'code'}
-                                </span>
-                                <CopyButton code={codeContent} />
-                              </div>
-                              <div className="p-4 overflow-x-auto">
-                                <code className={className} {...props}>
-                                  {children}
-                                </code>
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      },
-                      strong: ({ node, ...props }) => <strong {...props} className="font-bold text-white" />,
-                      em: ({ node, ...props }) => <em {...props} className="italic text-gray-100" />
-                    }}
-                  >
+                  <ReactMarkdown components={markdownComponents}>
                     {msg.text}
                   </ReactMarkdown>
                 </div>
@@ -168,7 +232,10 @@ export const ChatWidget: React.FC = () => {
           </div>
 
           {/* Input Area */}
-          <form onSubmit={handleSubmit} className="p-4 border-t border-white/5 bg-black/20">
+          <form
+            onSubmit={handleSubmit}
+            className="p-4 border-t border-white/5 bg-black/20"
+          >
             <div className="relative">
               <input
                 type="text"

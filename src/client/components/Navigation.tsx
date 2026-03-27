@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 export const Navigation: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -7,33 +7,36 @@ export const Navigation: React.FC = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       const navbarHeight = 100;
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition =
+        element.getBoundingClientRect().top + window.pageYOffset;
       const offsetPosition = elementPosition - navbarHeight;
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
 
   const links = [
-    { label: 'ABOUT', id: 'about' },
-    { label: 'RESUME', id: 'resume' },
-    { label: 'WORK', id: 'projects' },
-    { label: 'CONTACT', id: 'contact' },
+    { label: "ABOUT", id: "about" },
+    { label: "RESUME", id: "resume" },
+    { label: "WORK", id: "projects" },
+    { label: "CONTACT", id: "contact" },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full flex justify-between items-center p-6 md:p-10 z-50 transition-all duration-500 ${scrolled ? 'bg-brand-dark/80 backdrop-blur-md py-4' : ''}`}>
+    <nav
+      className={`fixed top-0 left-0 w-full flex justify-between items-center p-6 md:p-10 z-50 transition-all duration-500 ${scrolled ? "bg-brand-dark/80 backdrop-blur-md py-4" : ""}`}
+    >
       <div className="font-sans font-bold text-xl tracking-tighter text-white mix-blend-difference z-50">
         AC
       </div>

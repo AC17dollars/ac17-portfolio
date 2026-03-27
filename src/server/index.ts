@@ -56,7 +56,7 @@ Technical Skills:
 1. Tone: Chat-like, casual, friendly, and ultra-concise! You're a brilliant, tech-savvy friend. Keep it punchy and direct.
 2. Constraints:
    - BE BRIEF: Aim for under 50 words. Avoid unnecessary headers, fluff, or long intros. Get straight to the point.
-   - Use markdown hyperlinks \[text\](url) for links.
+   - Use markdown hyperlinks [text](url) for links.
    - For complex code/tasks, politely suggest the [Gemini website](https://gemini.google.com).
    - Use natural, punchy sentence structures.
    - SAFETY & SEARCH: Standard grounding rules apply.
@@ -79,7 +79,7 @@ app.post("/api/chat", async (c) => {
     const ai = new GoogleGenAI({ apiKey });
 
     const chat = ai.chats.create({
-      model: "gemini-3.1-flash-lite-preview",
+      model: "gemini-2.5-flash",
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
       },
@@ -101,7 +101,7 @@ app.post("/api/chat", async (c) => {
 });
 
 app.get("/api/github/activity", async (c) => {
-  const cache = typeof caches !== "undefined" ? caches.default : null;
+  const cache = caches == undefined ? null : caches.default;
 
   if (cache) {
     const cacheKey = new Request(
@@ -138,23 +138,25 @@ app.get("/api/github/activity", async (c) => {
 
     const events = await githubResponse.json();
 
-    const relevantTypes = [
+    const relevantTypes = new Set([
       "PushEvent",
       "CreateEvent",
       "PullRequestEvent",
       "IssuesEvent",
       "WatchEvent",
-    ];
+    ]);
 
     const seenRepos = new Set<string>();
 
     const filteredEvents = events
       .filter((event: any) => {
-        if (!relevantTypes.includes(event.type)) return false;
+        if (!relevantTypes.has(event.type)) return false;
 
-        const isMundane = ["PushEvent", "WatchEvent", "CreateEvent"].includes(
-          event.type,
-        );
+        const isMundane = new Set([
+          "PushEvent",
+          "WatchEvent",
+          "CreateEvent",
+        ]).has(event.type);
         if (isMundane) {
           if (seenRepos.has(event.repo.name)) {
             return false;

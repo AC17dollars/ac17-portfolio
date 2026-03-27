@@ -1,6 +1,6 @@
 export interface Message {
   id: string;
-  role: 'user' | 'model';
+  role: "user" | "model";
   text: string;
   timestamp: Date;
 }
@@ -11,9 +11,9 @@ export interface SkillGroup {
 }
 
 export enum ViewState {
-  HOME = 'HOME',
-  ABOUT = 'ABOUT',
-  CONTACT = 'CONTACT'
+  HOME = "HOME",
+  ABOUT = "ABOUT",
+  CONTACT = "CONTACT",
 }
 
 export interface GitHubRepo {

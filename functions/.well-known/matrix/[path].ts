@@ -16,12 +16,12 @@ export const onRequest = async (context: {
   params: { path?: string };
   env?: Record<string, string>;
 }) => {
-  const path = context.params.path as string;
+  const path = context.params.path;
   const server = context.env?.MATRIX_SERVER ?? DEFAULT_SERVER;
   const baseUrl =
     context.env?.MATRIX_HOMESERVER_BASE_URL ?? DEFAULT_HOMESERVER_BASE_URL;
   const rtcUrl = context.env?.MATRIX_RTC ?? DEFAULT_MATRIX_RTC;
-  
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     "Cache-Control": "public, max-age=86400", // 24h per spec recommendation
@@ -46,8 +46,10 @@ export const onRequest = async (context: {
         "org.matrix.msc4143.rtc_foci": [
           {
             type: "livekit",
-            livekit_service_url:  rtcUrl.endsWith("/") ? rtcUrl.slice(0, -1) : rtcUrl,
-          }
+            livekit_service_url: rtcUrl.endsWith("/")
+              ? rtcUrl.slice(0, -1)
+              : rtcUrl,
+          },
         ],
       }),
       { status: 200, headers },
