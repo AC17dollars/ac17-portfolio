@@ -79,16 +79,34 @@ export const Experience: React.FC = () => {
               <div className="relative pl-8 border-l border-white/10">
                 <div className="absolute left-[-5px] top-0 w-[9px] h-[9px] rounded-full bg-brand-accent shadow-[0_0_10px_rgba(147,197,253,0.5)]"></div>
                 <h4 className="text-xl font-sans font-bold text-white mb-2">
+                  Software Engineer
+                </h4>
+                <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
+                  May 2026 - Present · Remote
+                </div>
+                <p className="text-sm font-serif italic text-gray-300 mb-2">
+                  Lawpath
+                </p>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Contributing to Lawpath's legal-tech platform, building and
+                  improving features across its suite of online legal services
+                  and offerings.
+                </p>
+              </div>
+
+              <div className="relative pl-8 border-l border-white/10">
+                <div className="absolute left-[-5px] top-0 w-[9px] h-[9px] rounded-full bg-white/20"></div>
+                <h4 className="text-xl font-sans font-bold text-white mb-2">
                   Associate Node Developer
                 </h4>
                 <div className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
-                  January 2026 - Present
+                  January 2026 - April 2026
                 </div>
                 <p className="text-sm font-serif italic text-gray-300 mb-2">
                   E.K. Solutions (EKbana)
                 </p>
                 <p className="text-gray-400 text-sm leading-relaxed">
-                  Building scalable backend systems and high-performance
+                  Built scalable backend systems and high-performance
                   server-side applications using Node.js.
                 </p>
               </div>

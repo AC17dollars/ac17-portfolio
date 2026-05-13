@@ -1,6 +1,6 @@
 name = "ac17-portfolio"
 pages_build_output_dir = "dist"
-compatibility_date = "2025-12-12"
+compatibility_date = "2026-05-12"
 
 [vars]
 # GEMINI_API_KEY = "api-key" (Configure in Cloudflare Dashboard)

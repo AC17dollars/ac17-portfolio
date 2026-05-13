@@ -153,19 +153,20 @@ export const About: React.FC = () => {
               neural networks.
             </p>
             <p className="text-lg md:text-xl text-gray-400 leading-relaxed font-light mt-8">
-              Currently working as a{" "}
+              Currently working remotely as a{" "}
               <span className="text-brand-accent font-serif italic">
-                Node Developer
+                Software Engineer
               </span>{" "}
               for{" "}
               <a
-                href="https://ekbana.com"
+                href="https://lawpath.com.au"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline underline-offset-4"
               >
-                E.K. Solutions (EKbana).
+                Lawpath
               </a>
+              , based in Sydney, NSW, Australia.
             </p>
 
             {/* GitHub Activity */}

@@ -110,7 +110,7 @@ const ProjectCard: React.FC<{ project: Project; index: number }> = ({
           </h3>
           <div className="flex flex-wrap gap-2 md:gap-4 text-xs font-mono uppercase tracking-widest text-gray-500">
             {project.tags.map((tag, i) => (
-              <span key={crypto.randomUUID()}>
+              <span key={`${project.title}-${tag}`}>
                 {tag}{" "}
                 {i < project.tags.length - 1 && (
                   <span className="text-gray-700 mx-1">/</span>

@@ -30,10 +30,11 @@ Github: github.com/ac17dollars
 Linkedin: linkedin.com/in/ac17dollars
 
 Current Role:
-- Associate Node Developer at E.K. Solutions (EKbana) (January 2026 - Present)
-  - Focus: Scalable backend architectures, high-performance Node.js systems.
+- Software Engineer at Lawpath (May 2026 - Present), based in Sydney, NSW, Australia. Works fully remote from Nepal.
+  - Focus: Building and improving features across Lawpath's legal-tech platform and its suite of online legal services and offerings.
 
 Work Experience:
+- Associate Node Developer at E.K. Solutions (EKbana) (January 2026 - April 2026): Scalable backend architectures and high-performance Node.js systems.
 - Frontend Developer at cellapp | Smartpalika (Sept 2025 - Dec 2025): Responsive UIs for digital solutions.
 - Software Coordinator at ECAST, Thapathali (April 2023 - May 2024): Led coordination and deployment of software projects.
 

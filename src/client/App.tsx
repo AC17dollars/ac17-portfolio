@@ -56,7 +56,7 @@ const App: React.FC = () => {
             </div>
 
             <div className="mt-32 flex justify-between items-end text-xs text-gray-600 font-mono uppercase tracking-widest">
-              <div>© 2026 Abhinav Chalise</div>
+              <div>© {new Date().getFullYear()} Abhinav Chalise</div>
               <div>
                 Developed by{" "}
                 <a

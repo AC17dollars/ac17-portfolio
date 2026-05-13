@@ -28,7 +28,7 @@ export const Hero: React.FC = () => {
       </div>
 
       {/* Main Center Text */}
-      <div className="relative z-10 flex flex-col justify-center items-center flex-grow -mt-20">
+      <div className="relative z-10 flex flex-col justify-center items-center grow -mt-20">
         <div className="w-full max-w-[90vw]">
           <div className="overflow-hidden">
             <h1
