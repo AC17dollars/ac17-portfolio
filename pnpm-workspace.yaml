@@ -4,3 +4,6 @@ allowBuilds:
   protobufjs: true
   sharp: true
   workerd: true
+minimumReleaseAgeExclude:
+  - '@google/genai@2.27.0'
+  - lucide-react@1.51.0
